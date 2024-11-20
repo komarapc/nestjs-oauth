@@ -7,6 +7,7 @@ import { UsersRepository } from '../users/users.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@/entities/master/user.entity';
 import { Repository } from 'typeorm';
+import { TokenServie } from '@/services/token.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
@@ -17,6 +18,7 @@ import { Repository } from 'typeorm';
     GoogleStrategy,
     UsersRepository,
     Repository,
+    TokenServie,
   ],
 })
 export class AuthModule {}
