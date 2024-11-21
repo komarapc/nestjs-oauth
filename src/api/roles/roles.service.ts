@@ -28,7 +28,7 @@ export class RolesService {
         { limit: parsedQuery.limit, page: parsedQuery.page },
         total,
       );
-      return responseOk({ data, meta });
+      return responseOk({ roles: data, meta });
     } catch (error) {
       return responseInternalServerError(error.message);
     }
