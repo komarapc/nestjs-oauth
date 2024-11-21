@@ -13,7 +13,7 @@ export class Roles {
   id?: string;
   @Column()
   name: string;
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt?: Date;
   @UpdateDateColumn({ type: 'timestamp', nullable: true })
   updatedAt?: Date;
