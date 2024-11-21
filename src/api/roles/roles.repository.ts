@@ -13,8 +13,8 @@ export class RolesRepository {
   async getAll(query: RolesQuerySchema) {
     const { name, page, limit } = query;
     const offset = (page - 1) * limit;
-    const whereClause: Array<{}> = [{ deletedAt: IsNull() }];
-    if (name) whereClause.push({ name: Like(`%${name}%`) });
+    const whereClause = { deletedAt: IsNull() };
+    if (name) whereClause['name'] = Like(`%${name}%`);
     const roles = await this.rolesRepo.findAndCount({
       where: whereClause,
       skip: offset,

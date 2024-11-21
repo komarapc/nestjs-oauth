@@ -37,9 +37,9 @@ export class UsersRepository {
   async getAll(query: UserQuerySchema) {
     const { page, limit, email, name } = query;
     const offset = (page - 1) * limit;
-    const whereClause: Array<{}> = [{ deletedAt: IsNull() }];
-    if (email) whereClause.push({ email: Like(`%${email}%`) });
-    if (name) whereClause.push({ name: Like(`%${name}%`) });
+    const whereClause = { deletedAt: IsNull() };
+    if (email) whereClause['email'] = Like(`%${email}%`);
+    if (name) whereClause['name'] = Like(`%${name}%`);
     const users = await this.userRepo.findAndCount({
       where: whereClause,
       select: this.selectFields,
