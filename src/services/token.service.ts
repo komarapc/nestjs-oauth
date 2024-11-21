@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import config from '@/config/app';
+
 @Injectable()
 export class TokenServie {
   public token: string = '';
@@ -14,14 +15,13 @@ export class TokenServie {
   }
 
   generateToken(payload: any, expiresIn: string = '5m') {
-    const token = jwt.sign(payload, config().jwt.secret, { expiresIn });
-    return token;
+    return jwt.sign(payload, config().jwt.secret, { expiresIn });
   }
 
   verifyToken(token: string) {
     try {
-      const payload = jwt.verify(token, config().jwt.secret);
-      return payload;
+      return jwt.verify(token, config().jwt.secret);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return null;
     }

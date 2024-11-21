@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as uuid from 'uuid';
+
 @Injectable()
 export class UsersRepository {
   constructor(
@@ -17,13 +18,14 @@ export class UsersRepository {
     updatedAt: true,
   };
   async findOneByEmail(email: string) {
-    const user = await this.userRepo.findOne({ where: { email } });
-    return user;
+    return await this.userRepo.findOne({
+      where: { email },
+      select: this.selectFields,
+    });
   }
 
   async findOneById(id: string) {
-    const user = await this.userRepo.findOne({ where: { id } });
-    return user;
+    return await this.userRepo.findOne({ where: { id } });
   }
 
   async store(user: User) {
