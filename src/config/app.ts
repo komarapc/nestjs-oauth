@@ -26,4 +26,5 @@ export default () => ({
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN,
   },
+  salt_round: +process.env.SALT_ROUND || 12,
 });
