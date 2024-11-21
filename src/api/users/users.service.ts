@@ -98,4 +98,15 @@ export class UsersService {
       return responseInternalServerError(error.message);
     }
   }
+
+  async destroy(id: string) {
+    try {
+      const user = await this.userRepo.findOneById(id);
+      if (!user || user.deletedAt) return responseNotFound('User not found');
+      await this.userRepo.destroy(id);
+      return responseOk(null);
+    } catch (error) {
+      return responseInternalServerError(error.message);
+    }
+  }
 }

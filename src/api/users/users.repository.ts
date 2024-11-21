@@ -1,7 +1,7 @@
 import { User } from '@/entities/master/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository, Like, IsNull } from 'typeorm';
 import * as uuid from 'uuid';
 import { UserQuerySchema, UserUpdateSchema } from './users.schema';
 @Injectable()
@@ -16,6 +16,7 @@ export class UsersRepository {
     email: true,
     createdAt: true,
     updatedAt: true,
+    deletedAt: true,
   };
   async findOneByEmail(email: string) {
     return await this.userRepo.findOne({
@@ -36,11 +37,11 @@ export class UsersRepository {
   async getAll(query: UserQuerySchema) {
     const { page, limit, email, name } = query;
     const offset = (page - 1) * limit;
-    const whereClause: Array<{}> = [{ deletedAt: null }];
+    const whereClause: Array<{}> = [{ deletedAt: IsNull() }];
     if (email) whereClause.push({ email: Like(`%${email}%`) });
     if (name) whereClause.push({ name: Like(`%${name}%`) });
     const users = await this.userRepo.findAndCount({
-      where: [{ deletedAt: null }, ...whereClause],
+      where: whereClause,
       select: this.selectFields,
       take: limit,
       skip: offset,
@@ -54,6 +55,13 @@ export class UsersRepository {
     user.name = data.name || user.name;
     user.email = data.email || user.email;
     user.password = data.password || user.password;
+    return this.userRepo.save(user);
+  }
+
+  async destroy(id: string) {
+    const user = await this.userRepo.findOneBy({ id });
+    if (!user || user.deletedAt) return null;
+    user.deletedAt = new Date();
     return this.userRepo.save(user);
   }
 }

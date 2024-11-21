@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -45,6 +46,12 @@ export class UsersController {
     @Res() res: Response,
   ) {
     const result = await this.userService.update(id, body);
+    res.status(result.status_code).json(result);
+  }
+
+  @Delete(':id')
+  async destroy(@Param('id') id: string, @Res() res: Response) {
+    const result = await this.userService.destroy(id);
     res.status(result.status_code).json(result);
   }
 }
