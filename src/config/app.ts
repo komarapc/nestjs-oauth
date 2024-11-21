@@ -1,6 +1,10 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 export default () => ({
+  app: {
+    name: process.env.APP_NAME,
+    version: process.env.APP_VERSION,
+  },
   port: +process.env.PORT || 3000,
   secret: {
     session: process.env.SESSION_SECRET,
