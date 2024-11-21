@@ -5,9 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import config from './config/app';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseMasterConfig } from './config/database';
-import { AuthModule } from './api/auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
-import { UsersModule } from './api/users/users.module';
+import { ApiModule } from './api/api.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -16,9 +15,8 @@ import { UsersModule } from './api/users/users.module';
       load: [config],
     }),
     TypeOrmModule.forRoot(databaseMasterConfig),
-    AuthModule,
     PassportModule.register({ session: true }),
-    UsersModule,
+    ApiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
