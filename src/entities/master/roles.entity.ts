@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { HasRoles } from './has-roles.entity';
+import { Permission } from './permission.entity';
 
 @Entity()
 export class Roles {
@@ -28,4 +29,7 @@ export class Roles {
 
   @OneToMany(() => HasRoles, (hasRoles) => hasRoles.role)
   hasRoles?: HasRoles[];
+
+  @OneToMany(() => Permission, (permission) => permission.role)
+  permissions?: Permission[];
 }
