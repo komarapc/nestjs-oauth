@@ -3,10 +3,13 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
+  Inject,
   Param,
   Patch,
   Post,
   Query,
+  Req,
   Res,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -15,21 +18,41 @@ import {
   UserQuerySchema,
   UserUpdateSchema,
 } from './users.schema';
-import { Response } from 'express';
+import { Response, Request } from 'express';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
-
+  constructor(
+    private readonly userService: UsersService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
   @Get()
-  async getAll(@Query() query: UserQuerySchema, @Res() res: Response) {
+  async getAll(
+    @Query() query: UserQuerySchema,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const cacheKey = req.originalUrl;
+    const dataCache: any = await this.cacheManager.get(cacheKey);
+    if (dataCache) return res.status(HttpStatus.OK).json(dataCache);
     const result = await this.userService.getAll(query);
+    await this.cacheManager.set(cacheKey, result, 15 * 1000);
     res.status(result.status_code).json(result);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @Res() res: Response) {
+  async findOne(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const cacheKey = req.originalUrl;
+    const dataCache = await this.cacheManager.get(cacheKey);
+    if (dataCache) return res.status(HttpStatus.OK).json(dataCache);
     const result = await this.userService.findOne(id);
+    await this.cacheManager.set(cacheKey, result, 15 * 1000);
     res.status(result.status_code).json(result);
   }
 

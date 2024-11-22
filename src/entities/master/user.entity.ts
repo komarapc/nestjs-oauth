@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import * as uuid from 'uuid';
 @Entity()
 export class User {
@@ -14,18 +21,12 @@ export class User {
   @Column({ nullable: true })
   password?: string;
 
-  @Column({
-    default: () => 'CURRENT_TIMESTAMP',
-    type: 'timestamp',
-  })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt?: Date;
 
-  @Column({
-    default: () => 'CURRENT_TIMESTAMP',
-    type: 'timestamp',
-  })
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt?: Date;
 
-  @Column({ nullable: true, type: 'timestamp' })
+  @DeleteDateColumn({ nullable: true, type: 'timestamp' })
   deletedAt?: Date;
 }

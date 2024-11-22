@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseMasterConfig } from './config/database';
 import { PassportModule } from '@nestjs/passport';
 import { ApiModule } from './api/api.module';
+import { CacheModule } from '@nestjs/cache-manager';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -14,6 +15,7 @@ import { ApiModule } from './api/api.module';
       expandVariables: true,
       load: [config],
     }),
+    CacheModule.register(),
     TypeOrmModule.forRoot(databaseMasterConfig),
     PassportModule.register({ session: true }),
     ApiModule,
