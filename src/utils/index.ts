@@ -54,3 +54,20 @@ export const filteredEmptyObj = (data: any) => {
   const length = Object.keys(filteredData).length;
   return { data: filteredData, length };
 };
+
+export const httpMethodToApiOperation = (method: string) => {
+  switch (method) {
+    case 'GET':
+      return 'Read';
+    case 'POST':
+      return 'Create';
+    case 'PUT':
+      return 'Update';
+    case 'PATCH':
+      return 'Update';
+    case 'DELETE':
+      return 'Delete';
+    default:
+      return '';
+  }
+};
