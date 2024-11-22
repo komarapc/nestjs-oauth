@@ -3,10 +3,12 @@ import { AppModule } from './app.module';
 import config from '@/config/app';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(
     session({
       secret: config().secret.session,
@@ -19,6 +21,7 @@ async function bootstrap() {
   );
   app.use(passport.initialize());
   app.use(passport.session());
+  app.useStaticAssets(join(__dirname, '..', 'public'));
   const configOpenApi = new DocumentBuilder()
     .setTitle('API Documentation')
     .setDescription('API Documentation')
@@ -26,6 +29,7 @@ async function bootstrap() {
     .build();
   const doumentFactory = () => SwaggerModule.createDocument(app, configOpenApi);
   SwaggerModule.setup('docs', app, doumentFactory, {
+    customSiteTitle: 'API Documentation',
     swaggerOptions: {
       defaultModelsExpandDepth: -1,
       docExpansion: 'none',
@@ -38,6 +42,8 @@ async function bootstrap() {
         theme: 'arta',
       },
     },
+    customCss: `.swagger-ui .topbar { display: none }`,
+    customCssUrl: '/css/dark-theme.css',
   });
   await app.listen(config().port);
 }
