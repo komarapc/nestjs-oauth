@@ -1,32 +1,33 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Roles } from './roles.entity';
 
-@Entity({ name: 'has_roles' })
+@Entity()
 export class HasRoles {
-  @PrimaryColumn({ type: 'varchar', length: 36 })
-  id?: string;
-  @Column({ type: 'varchar', length: 36 })
-  user_id: string;
-  @Column({ type: 'varchar', length: 36 })
-  role_id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  user_id?: string;
+
+  @Column()
+  role_id?: string;
+
   @CreateDateColumn({ type: 'timestamp' })
-  createdAt: Date;
-  @UpdateDateColumn({ type: 'timestamp', nullable: true })
-  updatedAt?: Date;
-  @DeleteDateColumn({ type: 'timestamp', nullable: true })
-  deletedAt?: Date;
+  createdAt?: Date;
 
   @ManyToOne(() => User, (user) => user.hasRoles)
+  @JoinColumn({ name: 'user_id' })
   user?: User;
-  @ManyToOne(() => Roles, (roles) => roles.hasRoles)
-  roles?: Roles;
+
+  @ManyToOne(() => Roles, (role) => role.hasRoles)
+  @JoinColumn({ name: 'role_id' })
+  role?: Roles;
 }

@@ -10,7 +10,11 @@ import {
   Res,
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { RolesCreateSchema, RolesQuerySchema } from './roles.schema';
+import {
+  RolesCreateDto,
+  RolesCreateSchema,
+  RolesQuerySchema,
+} from './roles.schema';
 import { Response } from 'express';
 
 @Controller('roles')
@@ -30,7 +34,7 @@ export class RolesController {
   }
 
   @Post()
-  async store(@Body() body: RolesCreateSchema, @Res() res: Response) {
+  async store(@Body() body: RolesCreateDto, @Res() res: Response) {
     const result = await this.rolesService.store(body);
     res.status(result.status_code).json(result);
   }

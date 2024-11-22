@@ -13,14 +13,19 @@ import { HasRoles } from './has-roles.entity';
 export class Roles {
   @PrimaryColumn({ length: 36, type: 'varchar' })
   id?: string;
+
   @Column()
   name: string;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt?: Date;
+
   @UpdateDateColumn({ type: 'timestamp', nullable: true })
   updatedAt?: Date;
+
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deletedAt?: Date;
-  @OneToMany(() => HasRoles, (hasRoles) => hasRoles.role_id)
+
+  @OneToMany(() => HasRoles, (hasRoles) => hasRoles.role)
   hasRoles?: HasRoles[];
 }

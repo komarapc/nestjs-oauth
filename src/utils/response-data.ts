@@ -50,7 +50,7 @@ export const responseJson = (props: ResponseDataProps): ResponseData => ({
   errors: props.errors,
 });
 
-export const responseCreated = (data: any) => {
+export const responseCreated = (data?: any) => {
   return responseJson({
     status_code: 'CREATED',
     message: 'Success',
@@ -58,7 +58,7 @@ export const responseCreated = (data: any) => {
   });
 };
 
-export const responseOk = (data: any) => {
+export const responseOk = (data?: any) => {
   return responseJson({
     status_code: 'OK',
     message: 'Success',
