@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { HasRoles } from './has-roles.entity';
 
 @Entity()
 export class Roles {
@@ -19,4 +21,6 @@ export class Roles {
   updatedAt?: Date;
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deletedAt?: Date;
+  @OneToMany(() => HasRoles, (hasRoles) => hasRoles.role_id)
+  hasRoles?: HasRoles[];
 }

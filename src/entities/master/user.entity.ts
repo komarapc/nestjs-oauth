@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import * as uuid from 'uuid';
+import { HasRoles } from './has-roles.entity';
 @Entity()
 export class User {
   @PrimaryColumn({ length: 36, default: uuid.v7() })
@@ -29,4 +31,7 @@ export class User {
 
   @DeleteDateColumn({ nullable: true, type: 'timestamp' })
   deletedAt?: Date;
+
+  @OneToMany(() => HasRoles, (hasRoles) => hasRoles.user_id)
+  hasRoles?: HasRoles[];
 }
