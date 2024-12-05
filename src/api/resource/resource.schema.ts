@@ -16,6 +16,7 @@ export const resourceQuerySchema = z.object({
 });
 export const resourceCreateSchema = z.object({
   name: z.string().min(3),
+  path: z.string().min(1),
 });
 
 export type ResourceQuery = z.infer<typeof resourceQuerySchema>;
