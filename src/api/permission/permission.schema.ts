@@ -21,6 +21,7 @@ export const permissionQuerySchema = z.object({
 });
 
 export const permissionUpdateSchema = z.object({
+  role_id: z.string().uuid(),
   resource_id: z.string().uuid(),
   action: z.array(z.enum(['create', 'read', 'update', 'delete'])).min(1),
 });

@@ -5,6 +5,8 @@ import {
   PermissionCreateSchema,
   permissionQuerySchema,
   PermissionQuerySchema,
+  permissionUpdateSchema,
+  PermissionUpdateSchema,
 } from './permission.schema';
 import {
   responseBadRequest,
@@ -56,7 +58,23 @@ export class PermissionService {
       return responseInternalServerError(error.message);
     }
   }
-  async update(id: string, data: any) {}
+  async update(id: string, data: PermissionUpdateSchema) {
+    try {
+      const parsedData = permissionUpdateSchema.parse(data);
+      const permission = await this.permissionRepo.findOne(id);
+      if (!permission || permission.deletedAt)
+        return responseNotFound('Permission not found');
+      const updatedPermission = await this.permissionRepo.update(
+        id,
+        parsedData,
+      );
+      return responseOk(updatedPermission);
+    } catch (error) {
+      const { errors, hasError } = zodErrorHandle(error);
+      if (hasError) return responseBadRequest(errors);
+      return responseInternalServerError(error.message);
+    }
+  }
   async destroy(id: string) {}
   async restore(id: string) {}
 }

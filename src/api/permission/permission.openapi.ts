@@ -42,3 +42,16 @@ export class PermissionQueryDto {
   })
   limit?: string;
 }
+
+export class PermissionUpdateDto {
+  @ApiProperty({ type: 'string', description: 'id of role' })
+  role_id?: string;
+  @ApiProperty({ type: 'string', description: 'id of resource' })
+  resource_id?: string;
+  @ApiProperty({
+    type: 'array',
+    description: 'action of permission',
+    example: ['create', 'read', 'update', 'delete'],
+  })
+  action?: Array<'create' | 'read' | 'update' | 'delete'>;
+}

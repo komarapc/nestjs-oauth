@@ -13,11 +13,16 @@ import {
 import { PermissionService } from './permission.service';
 import { Response } from 'express';
 import { ApiBody, ApiOperation, ApiQuery } from '@nestjs/swagger';
-import { PermissionDto, PermissionQueryDto } from './permission.openapi';
+import {
+  PermissionDto,
+  PermissionQueryDto,
+  PermissionUpdateDto,
+} from './permission.openapi';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
 import {
   PermissionCreateSchema,
   PermissionQuerySchema,
+  PermissionUpdateSchema,
 } from './permission.schema';
 
 @Controller('permission')
@@ -53,11 +58,16 @@ export class PermissionController {
   @Put(':id')
   @OpenApiResponses([200, 400, 500])
   @ApiOperation({ summary: 'Update permission' })
+  @ApiBody({ type: PermissionUpdateDto })
   async update(
     @Param('id') id: string,
-    @Body() body: any,
+    @Body() body: PermissionUpdateSchema,
     @Res() res: Response,
-  ) {}
+  ) {
+    const result = await this.permissionService.update(id, body);
+    res.status(result.status_code).json(result);
+  }
+
   @Put()
   @OpenApiResponses([200, 400, 500])
   @ApiOperation({ summary: 'Bulk update permission' })

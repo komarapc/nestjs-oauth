@@ -5,6 +5,7 @@ import { JsonContains, Like, Repository } from 'typeorm';
 import {
   PermissionCreateSchema,
   PermissionQuerySchema,
+  PermissionUpdateSchema,
 } from './permission.schema';
 import * as uuid from 'uuid';
 import { getOffset } from '@/utils';
@@ -96,7 +97,21 @@ export class PermissionRepository {
       await queryRunner.release();
     }
   }
-  async update(id: string, data: any) {}
+  async update(id: string, data: PermissionUpdateSchema) {
+    const permission = await this.permissionRepo.findOne({
+      where: { id },
+      relations: { role: true, resource: true },
+    });
+    if (!permission) return null;
+    Object.assign(permission, {
+      role_id: data.role_id,
+      resource_id: data.resource_id,
+      action: data.action,
+    });
+    await this.permissionRepo.save(permission);
+    return await this.findOne(id);
+  }
+  async bulkUpdate(data: any) {}
   async destroy(id: string) {}
   async restore(id: string) {}
 
