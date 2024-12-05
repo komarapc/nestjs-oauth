@@ -92,6 +92,8 @@ export class PermissionRepository {
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new Error(error.message);
+    } finally {
+      await queryRunner.release();
     }
   }
   async update(id: string, data: any) {}
