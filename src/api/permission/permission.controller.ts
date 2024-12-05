@@ -12,18 +12,23 @@ import {
 } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { Response } from 'express';
-import { ApiBody, ApiOperation } from '@nestjs/swagger';
-import { PermissionCreateDto, PermissionDto } from './permission.openapi';
+import { ApiBody, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { PermissionDto, PermissionQueryDto } from './permission.openapi';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
+import { PermissionQuerySchema } from './permission.schema';
 
 @Controller('permission')
 export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
   @Get()
+  @ApiQuery({ type: PermissionQueryDto })
   @ApiOperation({ summary: 'Get all permission' })
   @OpenApiResponses([200, 400, 500])
-  async getAll(@Query() query: any, @Res() res: Response) {}
+  async getAll(@Query() query: PermissionQuerySchema, @Res() res: Response) {
+    const result = await this.permissionService.getAll(query);
+    res.status(result.status_code).json(result);
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get one permission' })

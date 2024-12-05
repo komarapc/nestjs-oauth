@@ -71,3 +71,5 @@ export const httpMethodToApiOperation = (method: string) => {
       return '';
   }
 };
+
+export const getOffset = (page: number, limit: number) => limit * (page - 1);

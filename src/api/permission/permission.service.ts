@@ -3,6 +3,8 @@ import { PermissionRepository } from './permission.repository';
 import {
   permissionCreateSchema,
   PermissionCreateSchema,
+  permissionQuerySchema,
+  PermissionQuerySchema,
 } from './permission.schema';
 import {
   responseBadRequest,
@@ -11,13 +13,28 @@ import {
   responseNotFound,
   responseOk,
 } from '@/utils/response-data';
-import { zodErrorHandle } from '@/utils';
+import { metaPagination, zodErrorHandle } from '@/utils';
 
 @Injectable()
 export class PermissionService {
   constructor(private readonly permissionRepo: PermissionRepository) {}
 
-  async getAll(query: any) {}
+  async getAll(query: PermissionQuerySchema) {
+    try {
+      const parsedQuery = permissionQuerySchema.parse(query);
+      const { data, total } = await this.permissionRepo.getAll(parsedQuery);
+      if (!data.length) return responseNotFound('No data found');
+      const meta = metaPagination(
+        { limit: parsedQuery.limit, page: parsedQuery.page },
+        total,
+      );
+      return responseOk({ permissions: data, meta });
+    } catch (error) {
+      const { errors, hasError } = zodErrorHandle(error);
+      if (hasError) return responseBadRequest(errors);
+      return responseInternalServerError(error.message);
+    }
+  }
   async findOne(id: string) {
     try {
       const permission = await this.permissionRepo.findOne(id);

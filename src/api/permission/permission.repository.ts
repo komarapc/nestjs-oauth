@@ -1,9 +1,14 @@
 import { Permission } from '@/entities/master/permission.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PermissionCreateSchema } from './permission.schema';
+import { JsonContains, Like, Repository } from 'typeorm';
+import {
+  PermissionCreateSchema,
+  PermissionQuerySchema,
+} from './permission.schema';
 import * as uuid from 'uuid';
+import { getOffset } from '@/utils';
+type ResourceAction = 'create' | 'read' | 'update' | 'delete';
 @Injectable()
 export class PermissionRepository {
   constructor(
@@ -11,7 +16,35 @@ export class PermissionRepository {
     private readonly permissionRepo: Repository<Permission>,
   ) {}
 
-  async getAll(query: any) {}
+  async getAll(query: PermissionQuerySchema) {
+    const offset = getOffset(query.page, query.limit);
+
+    const permissionQueryBuilder = this.permissionRepo
+      .createQueryBuilder('permission')
+      .leftJoinAndSelect('permission.role', 'role')
+      .leftJoinAndSelect('permission.resource', 'resource')
+      .take(query.limit)
+      .skip(offset);
+    if (query.roleName)
+      permissionQueryBuilder.andWhere('role.name LIKE :roleName', {
+        roleName: `%${query.roleName}%`,
+      });
+    if (query.resourceName)
+      permissionQueryBuilder.andWhere('resource.name LIKE :resourceName', {
+        resourceName: `%${query.resourceName}%`,
+      });
+    if (query.action) {
+      permissionQueryBuilder.andWhere(
+        'JSON_CONTAINS(permission.action, :action)',
+        {
+          action: JSON.stringify([query.action]),
+        },
+      );
+    }
+
+    const [data, total] = await permissionQueryBuilder.getManyAndCount();
+    return { data, total };
+  }
   async findOne(id: string) {
     return await this.permissionRepo
       .createQueryBuilder('permission')
