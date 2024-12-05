@@ -49,7 +49,7 @@ export class PermissionController {
   @Post()
   @ApiBody({ type: [PermissionDto] })
   @OpenApiResponses([201, 400, 500])
-  @ApiOperation({ summary: 'Create new permission' })
+  @ApiOperation({ summary: 'Create new permission or bulk update' })
   async store(@Body() body: any, @Res() res: Response) {
     const result = await this.permissionService.store(body);
     res.status(result.status_code).json(result);
@@ -67,15 +67,6 @@ export class PermissionController {
     const result = await this.permissionService.update(id, body);
     res.status(result.status_code).json(result);
   }
-
-  @Put()
-  @OpenApiResponses([200, 400, 500])
-  @ApiOperation({ summary: 'Bulk update permission' })
-  @ApiBody({ type: [PermissionDto] })
-  async bulkUpdate(
-    @Body() body: PermissionCreateSchema,
-    @Res() res: Response,
-  ) {}
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete permission' })

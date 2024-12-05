@@ -111,7 +111,6 @@ export class PermissionRepository {
     await this.permissionRepo.save(permission);
     return await this.findOne(id);
   }
-  async bulkUpdate(data: any) {}
   async destroy(id: string) {}
   async restore(id: string) {}
 
