@@ -20,5 +20,11 @@ export const permissionQuerySchema = z.object({
     .default('10'),
 });
 
+export const permissionUpdateSchema = z.object({
+  resource_id: z.string().uuid(),
+  action: z.array(z.enum(['create', 'read', 'update', 'delete'])).min(1),
+});
+
 export type PermissionCreateSchema = z.infer<typeof permissionCreateSchema>;
 export type PermissionQuerySchema = z.infer<typeof permissionQuerySchema>;
+export type PermissionUpdateSchema = z.infer<typeof permissionUpdateSchema>;

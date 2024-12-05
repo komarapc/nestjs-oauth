@@ -15,7 +15,10 @@ import { Response } from 'express';
 import { ApiBody, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { PermissionDto, PermissionQueryDto } from './permission.openapi';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
-import { PermissionQuerySchema } from './permission.schema';
+import {
+  PermissionCreateSchema,
+  PermissionQuerySchema,
+} from './permission.schema';
 
 @Controller('permission')
 export class PermissionController {
@@ -55,13 +58,21 @@ export class PermissionController {
     @Body() body: any,
     @Res() res: Response,
   ) {}
+  @Put()
+  @OpenApiResponses([200, 400, 500])
+  @ApiOperation({ summary: 'Bulk update permission' })
+  @ApiBody({ type: [PermissionDto] })
+  async bulkUpdate(
+    @Body() body: PermissionCreateSchema,
+    @Res() res: Response,
+  ) {}
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete permission' })
   @OpenApiResponses([204, 400, 500])
   async destroy(@Param('id') id: string, @Res() res: Response) {}
 
-  @Patch(':id')
+  @Patch(':id/restore')
   @ApiOperation({ summary: 'Restore permission' })
   @OpenApiResponses([200, 400, 500])
   async restore(@Param('id') id: string, @Res() res: Response) {}
