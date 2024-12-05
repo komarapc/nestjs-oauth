@@ -111,8 +111,17 @@ export class PermissionRepository {
     await this.permissionRepo.save(permission);
     return await this.findOne(id);
   }
-  async destroy(id: string) {}
-  async restore(id: string) {}
+  async destroy(id: string) {
+    const permission = await this.permissionRepo.findOne({ where: { id } });
+    if (!permission) return null;
+    return await this.permissionRepo.softDelete({ id });
+  }
+  async restore(id: string) {
+    const permission = await this.permissionRepo.findOne({ where: { id } });
+    if (!permission) return null;
+    await this.permissionRepo.restore({ id });
+    return await this.findOne(id);
+  }
 
   async findByRoleAndResource(role_id: string, resource_id: string) {
     return await this.permissionRepo.findOne({

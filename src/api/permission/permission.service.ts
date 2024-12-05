@@ -39,8 +39,7 @@ export class PermissionService {
   }
   async findOne(id: string) {
     try {
-      const permission = await this.permissionRepo.findOne(id);
-      if (!permission || permission.deletedAt)
+      if (!(await this.checkPermissionIsExist(id)))
         return responseNotFound('Permission not found');
       return responseOk(permission);
     } catch (error) {
@@ -61,8 +60,7 @@ export class PermissionService {
   async update(id: string, data: PermissionUpdateSchema) {
     try {
       const parsedData = permissionUpdateSchema.parse(data);
-      const permission = await this.permissionRepo.findOne(id);
-      if (!permission || permission.deletedAt)
+      if (!(await this.checkPermissionIsExist(id)))
         return responseNotFound('Permission not found');
       const updatedPermission = await this.permissionRepo.update(
         id,
@@ -75,6 +73,30 @@ export class PermissionService {
       return responseInternalServerError(error.message);
     }
   }
-  async destroy(id: string) {}
-  async restore(id: string) {}
+  async destroy(id: string) {
+    try {
+      if (!(await this.checkPermissionIsExist(id)))
+        return responseNotFound('Permission not found');
+      await this.permissionRepo.destroy(id);
+      return responseOk();
+    } catch (error) {
+      return responseInternalServerError(error.message);
+    }
+  }
+  async restore(id: string) {
+    try {
+      if (!(await this.checkPermissionIsExist(id)))
+        return responseNotFound('Permission not found');
+      const restorePermission = await this.permissionRepo.restore(id);
+      return responseOk(restorePermission);
+    } catch (error) {
+      return responseInternalServerError(error.message);
+    }
+  }
+
+  async checkPermissionIsExist(id: string) {
+    const permission = await this.permissionRepo.findOne(id);
+    if (!permission || permission.deletedAt) return false;
+    return true;
+  }
 }

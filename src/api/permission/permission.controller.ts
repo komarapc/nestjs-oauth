@@ -69,12 +69,18 @@ export class PermissionController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete permission' })
+  @ApiOperation({ summary: 'Delete permission - Soft delete' })
   @OpenApiResponses([204, 400, 500])
-  async destroy(@Param('id') id: string, @Res() res: Response) {}
+  async destroy(@Param('id') id: string, @Res() res: Response) {
+    const result = await this.permissionService.destroy(id);
+    res.status(result.status_code).json(result);
+  }
 
   @Patch(':id/restore')
   @ApiOperation({ summary: 'Restore permission' })
   @OpenApiResponses([200, 400, 500])
-  async restore(@Param('id') id: string, @Res() res: Response) {}
+  async restore(@Param('id') id: string, @Res() res: Response) {
+    const result = await this.permissionService.restore(id);
+    res.status(result.status_code).json(result);
+  }
 }
