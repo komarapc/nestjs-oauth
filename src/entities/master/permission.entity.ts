@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -13,17 +14,20 @@ import { Resource } from './resource.entity';
 @Entity({ name: 'permissions' })
 export class Permission {
   @PrimaryColumn({ type: 'varchar', length: 36 })
-  id?: string;
-  @Column({ primary: true, type: 'varchar', length: 36 })
-  role_id?: string;
+  id: string;
+  @Column({ primary: false, type: 'varchar', length: 36 })
+  role_id: string;
   @Column({ nullable: false, type: 'varchar', length: 36 })
-  resource_id?: string;
+  resource_id: string;
   @Column({ nullable: false, type: 'json' })
-  action?: string;
+  action: Array<'create' | 'read' | 'update' | 'delete'>;
   @CreateDateColumn()
   createdAt?: Date;
   @UpdateDateColumn()
   updatedAt?: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @ManyToOne(() => Roles, (role) => role.permissions)
   @JoinColumn({ name: 'role_id' })

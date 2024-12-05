@@ -12,6 +12,9 @@ import {
 } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { Response } from 'express';
+import { ApiBody } from '@nestjs/swagger';
+import { PermissionCreateDto, PermissionDto } from './permission.openapi';
+import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
 
 @Controller('permission')
 export class PermissionController {
@@ -24,7 +27,12 @@ export class PermissionController {
   async findOne(@Param('id') id: string, @Res() res: Response) {}
 
   @Post()
-  async store(@Body() body: any, @Res() res: Response) {}
+  @ApiBody({ type: [PermissionDto] })
+  @OpenApiResponses([201, 400, 500])
+  async store(@Body() body: any, @Res() res: Response) {
+    const result = await this.permissionService.store(body);
+    res.status(result.status_code).json(result);
+  }
 
   @Put(':/id')
   async update(
