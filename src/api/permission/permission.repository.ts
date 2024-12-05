@@ -12,7 +12,16 @@ export class PermissionRepository {
   ) {}
 
   async getAll(query: any) {}
-  async findOne(id: string) {}
+  async findOne(id: string) {
+    return await this.permissionRepo
+      .createQueryBuilder('permission')
+      .leftJoinAndSelect('permission.role', 'role')
+      .leftJoinAndSelect('permission.resource', 'resource')
+      .select(['permission', 'role.name', 'resource.name'])
+      .where('permission.id = :id', { id })
+      .withDeleted()
+      .getOne();
+  }
   async store(data: PermissionCreateSchema) {
     const queryRunner =
       this.permissionRepo.manager.connection.createQueryRunner();
