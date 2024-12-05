@@ -39,7 +39,8 @@ export class PermissionService {
   }
   async findOne(id: string) {
     try {
-      if (!(await this.checkPermissionIsExist(id)))
+      const permission = await this.permissionRepo.findOne(id);
+      if (!permission || permission.deletedAt)
         return responseNotFound('Permission not found');
       return responseOk(permission);
     } catch (error) {
