@@ -15,6 +15,8 @@ export class Resource {
   id?: string;
   @Column({ unique: true })
   name?: string;
+  @Column({ nullable: true })
+  path?: string;
   @CreateDateColumn()
   createdAt?: Date;
   @UpdateDateColumn()
