@@ -98,10 +98,7 @@ export class PermissionRepository {
     }
   }
   async update(id: string, data: PermissionUpdateSchema) {
-    const permission = await this.permissionRepo.findOne({
-      where: { id },
-      relations: { role: true, resource: true },
-    });
+    const permission = await this.permissionRepo.findOneBy({ id });
     if (!permission) return null;
     Object.assign(permission, {
       role_id: data.role_id,
