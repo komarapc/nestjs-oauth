@@ -11,15 +11,22 @@ import {
 import { TokenServie } from '@/services/token.service';
 import { Profile } from 'passport-google-oauth20';
 import { zodErrorHandle } from '@/utils';
-import { authLocalLoginSchema, AuthLocalLoginSchema } from './auth.schema';
+import {
+  authLocalLoginRolesSchema,
+  AuthLocalLoginRolesSchema,
+  authLocalLoginSchema,
+  AuthLocalLoginSchema,
+} from './auth.schema';
 import * as bcrypt from 'bcrypt';
 import { HasRoleRepository } from '../has-roles/has-roles.repository';
+import { RolesRepository } from '../roles/roles.repository';
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepo: UsersRepository,
     private readonly tokenService: TokenServie,
     private readonly hasRoleRepo: HasRoleRepository,
+    private readonly roleRepo: RolesRepository,
   ) {}
 
   async validateUser({ email, name }: { email: string; name: string }) {
@@ -57,6 +64,32 @@ export class AuthService {
         avaliable_roles: avaliableRoles,
         token,
       });
+    } catch (error) {
+      const { errors, hasError } = zodErrorHandle(error);
+      if (hasError) return responseBadRequest(errors);
+      return responseInternalServerError(error.message);
+    }
+  }
+
+  async loginLocalWithRoles(data: AuthLocalLoginRolesSchema) {
+    try {
+      const parsedData = authLocalLoginRolesSchema.parse(data);
+      const decode = this.tokenService.decodeToken(parsedData.token);
+      if (!decode) return responseUnauthorized('Token not valid');
+      const existUserRole = await this.hasRoleRepo.existUserRoles(
+        decode?.id,
+        parsedData.role_id,
+      );
+      if (!existUserRole)
+        return responseUnauthorized('User not have permission');
+      const [user, role] = await Promise.all([
+        this.userRepo.findOneById(decode.id),
+        this.roleRepo.findOneById(parsedData.role_id),
+      ]);
+      const { password, ...userData } = user;
+      const payload = { id: user.id, role_id: parsedData.role_id };
+      const token = this.tokenService.generateToken(payload, '1d');
+      return responseOk({ user: userData, role, token });
     } catch (error) {
       const { errors, hasError } = zodErrorHandle(error);
       if (hasError) return responseBadRequest(errors);

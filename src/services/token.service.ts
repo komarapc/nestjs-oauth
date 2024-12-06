@@ -28,6 +28,6 @@ export class TokenServie {
   }
 
   decodeToken(token: string) {
-    return jwt.decode(token);
+    return jwt.decode(token, { json: true });
   }
 }

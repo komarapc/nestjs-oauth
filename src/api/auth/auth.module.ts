@@ -10,9 +10,11 @@ import { Repository } from 'typeorm';
 import { TokenServie } from '@/services/token.service';
 import { HasRoleRepository } from '../has-roles/has-roles.repository';
 import { HasRoles } from '@/entities/master/has-roles.entity';
+import { Roles } from '@/entities/master/roles.entity';
+import { RolesRepository } from '../roles/roles.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, HasRoles])],
+  imports: [TypeOrmModule.forFeature([User, HasRoles, Roles])],
   controllers: [AuthController],
   providers: [
     AuthService,
@@ -22,6 +24,7 @@ import { HasRoles } from '@/entities/master/has-roles.entity';
     Repository,
     TokenServie,
     HasRoleRepository,
+    RolesRepository,
   ],
 })
 export class AuthModule {}

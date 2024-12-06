@@ -14,7 +14,7 @@ import { Profile } from 'passport-google-oauth20';
 import { ApiBody, ApiOAuth2, ApiOperation } from '@nestjs/swagger';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
 import { AuthLocalLoginDto, AuthLocalLoginRolesDto } from './auth.openapi';
-import { AuthLocalLoginSchema } from './auth.schema';
+import { AuthLocalLoginRolesSchema, AuthLocalLoginSchema } from './auth.schema';
 
 @Controller('auth')
 export class AuthController {
@@ -47,5 +47,11 @@ export class AuthController {
   @ApiOperation({ summary: 'Login with email and password and roles' })
   @OpenApiResponses([200, 400, 500])
   @ApiBody({ type: AuthLocalLoginRolesDto })
-  async localLoginRoles(@Body() body: any, @Res() res: Response) {}
+  async localLoginRoles(
+    @Body() body: AuthLocalLoginRolesSchema,
+    @Res() res: Response,
+  ) {
+    const result = await this.authService.loginLocalWithRoles(body);
+    res.status(result.status_code).json(result);
+  }
 }
