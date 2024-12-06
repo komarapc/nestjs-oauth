@@ -11,7 +11,7 @@ import {
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { Profile } from 'passport-google-oauth20';
-import { ApiBody, ApiOAuth2, ApiOperation } from '@nestjs/swagger';
+import { ApiBody, ApiOperation } from '@nestjs/swagger';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
 import { AuthLocalLoginDto, AuthLocalLoginRolesDto } from './auth.openapi';
 import { AuthLocalLoginRolesSchema, AuthLocalLoginSchema } from './auth.schema';

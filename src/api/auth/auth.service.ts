@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from '../users/users.repository';
-import { User } from '@/entities/master/user.entity';
 import {
   responseBadRequest,
   responseInternalServerError,
