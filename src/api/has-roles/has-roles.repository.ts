@@ -35,4 +35,17 @@ export class HasRoleRepository {
   async destroy(id: string) {
     return await this.hasRole.delete(id);
   }
+
+  async getByUserId(user_id: string) {
+    const hasRoles = await this.hasRole.find({
+      where: { user_id },
+      relations: {
+        role: true,
+      },
+    });
+    return hasRoles.map((item) => {
+      const { role, ...rest } = item;
+      return { id: role.id, name: role.name };
+    });
+  }
 }

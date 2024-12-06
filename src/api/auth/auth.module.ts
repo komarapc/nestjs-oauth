@@ -8,9 +8,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@/entities/master/user.entity';
 import { Repository } from 'typeorm';
 import { TokenServie } from '@/services/token.service';
+import { HasRoleRepository } from '../has-roles/has-roles.repository';
+import { HasRoles } from '@/entities/master/has-roles.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User, HasRoles])],
   controllers: [AuthController],
   providers: [
     AuthService,
@@ -19,6 +21,7 @@ import { TokenServie } from '@/services/token.service';
     UsersRepository,
     Repository,
     TokenServie,
+    HasRoleRepository,
   ],
 })
 export class AuthModule {}

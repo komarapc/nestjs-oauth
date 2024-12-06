@@ -14,6 +14,7 @@ export class UsersRepository {
     id: true,
     name: true,
     email: true,
+    password: true,
     createdAt: true,
     updatedAt: true,
     deletedAt: true,

@@ -42,7 +42,6 @@ export class PermissionRepository {
         },
       );
     }
-
     const [data, total] = await permissionQueryBuilder.getManyAndCount();
     return { data, total };
   }
