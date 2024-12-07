@@ -15,6 +15,7 @@ import {
   AuthLocalLoginRolesSchema,
   authLocalLoginSchema,
   AuthLocalLoginSchema,
+  AuthTokenPayload,
 } from './auth.schema';
 import * as bcrypt from 'bcrypt';
 import { HasRoleRepository } from '../has-roles/has-roles.repository';
@@ -84,7 +85,7 @@ export class AuthService {
       if (!existUserRole)
         return responseUnauthorized('User does not have permission');
       const { password, ...userData } = user;
-      const payload = { id: user.id, role_id };
+      const payload: AuthTokenPayload = { user_id: user.id, role_id };
       const newToken = this.tokenService.generateToken(payload, '1d');
       return responseOk({ user: userData, role, token: newToken });
     } catch (error) {

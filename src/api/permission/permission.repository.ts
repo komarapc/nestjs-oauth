@@ -127,4 +127,11 @@ export class PermissionRepository {
       },
     });
   }
+
+  async getByRole(role_id: string) {
+    return await this.permissionRepo.find({
+      where: { role_id },
+      relations: { resource: true },
+    });
+  }
 }

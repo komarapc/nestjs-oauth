@@ -12,3 +12,4 @@ export type AuthLocalLoginSchema = z.infer<typeof authLocalLoginSchema>;
 export type AuthLocalLoginRolesSchema = z.infer<
   typeof authLocalLoginRolesSchema
 >;
+export type AuthTokenPayload = { user_id: string; role_id: string };

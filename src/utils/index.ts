@@ -58,15 +58,15 @@ export const filteredEmptyObj = (data: any) => {
 export const httpMethodToApiOperation = (method: string) => {
   switch (method) {
     case 'GET':
-      return 'Read';
+      return 'read';
     case 'POST':
-      return 'Create';
+      return 'create';
     case 'PUT':
-      return 'Update';
+      return 'update';
     case 'PATCH':
-      return 'Update';
+      return 'update';
     case 'DELETE':
-      return 'Delete';
+      return 'delete';
     default:
       return '';
   }

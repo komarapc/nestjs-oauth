@@ -27,7 +27,7 @@ export class TokenServie {
     }
   }
 
-  decodeToken(token: string) {
+  decodeToken(token: string): any {
     return jwt.decode(token, { json: true });
   }
 

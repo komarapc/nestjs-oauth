@@ -29,3 +29,4 @@ export const permissionUpdateSchema = z.object({
 export type PermissionCreateSchema = z.infer<typeof permissionCreateSchema>;
 export type PermissionQuerySchema = z.infer<typeof permissionQuerySchema>;
 export type PermissionUpdateSchema = z.infer<typeof permissionUpdateSchema>;
+export type PermissionAction = 'create' | 'read' | 'update' | 'delete';

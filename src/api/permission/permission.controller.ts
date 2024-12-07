@@ -12,7 +12,12 @@ import {
 } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { Response } from 'express';
-import { ApiBody, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiQuery,
+} from '@nestjs/swagger';
 import {
   PermissionDto,
   PermissionQueryDto,
@@ -26,6 +31,7 @@ import {
 } from './permission.schema';
 
 @Controller('permission')
+@ApiBearerAuth()
 export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 

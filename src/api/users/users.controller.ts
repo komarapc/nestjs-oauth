@@ -11,6 +11,7 @@ import {
   Query,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
@@ -21,14 +22,20 @@ import {
 import { Response, Request } from 'express';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { PermissionGuard } from '@/guards/permission/permission.guard';
+import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
 
+@ApiBearerAuth()
 @Controller('users')
+@UseGuards(PermissionGuard)
 export class UsersController {
   constructor(
     private readonly userService: UsersService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
   @Get()
+  @OpenApiResponses([200, 400, 401, 403, 500])
   async getAll(
     @Query() query: UserQuerySchema,
     @Req() req: Request,

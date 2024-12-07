@@ -8,15 +8,25 @@ import {
   Put,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ResourceService } from './resource.service';
 import { ResourceCreateSchema, ResourceQuery } from './resource.schema';
 import { Response } from 'express';
-import { ApiBody, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { ResourceCreateDto, ResourceQueryDto } from './resource.openapi';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
+import { PermissionGuard } from '@/guards/permission/permission.guard';
 
 @Controller('resource')
+@ApiBearerAuth()
+@UseGuards(PermissionGuard)
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 

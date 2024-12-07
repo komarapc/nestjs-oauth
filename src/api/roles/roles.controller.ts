@@ -8,6 +8,7 @@ import {
   Put,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import {
@@ -16,8 +17,12 @@ import {
   RolesQuerySchema,
 } from './roles.schema';
 import { Response } from 'express';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { PermissionGuard } from '@/guards/permission/permission.guard';
 
 @Controller('roles')
+@ApiBearerAuth()
+@UseGuards(PermissionGuard)
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
