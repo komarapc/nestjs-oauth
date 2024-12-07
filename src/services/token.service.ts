@@ -30,4 +30,12 @@ export class TokenServie {
   decodeToken(token: string) {
     return jwt.decode(token, { json: true });
   }
+
+  validateToken(token: string) {
+    try {
+      return Boolean(jwt.verify(token, config().jwt.secret));
+    } catch (error) {
+      return false;
+    }
+  }
 }
