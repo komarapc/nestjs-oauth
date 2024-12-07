@@ -6,13 +6,17 @@ import {
   Param,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { HasRolesService } from './has-roles.service';
 import { Response } from 'express';
 import { HasRolesCreateDto, HasRolesCreateSchema } from './has-roles.schema';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { PermissionGuard } from '@/guards/permission/permission.guard';
 
 @Controller('has-roles')
+@ApiBearerAuth()
+@UseGuards(PermissionGuard)
 export class HasRolesController {
   constructor(private readonly hasRoleService: HasRolesService) {}
 
