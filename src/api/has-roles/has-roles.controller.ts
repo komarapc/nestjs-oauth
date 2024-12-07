@@ -13,9 +13,11 @@ import { Response } from 'express';
 import { HasRolesCreateDto, HasRolesCreateSchema } from './has-roles.schema';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { PermissionGuard } from '@/guards/permission/permission.guard';
+import { JwtTokenGuard } from '@/guards/jwt-token/jwt-token.guard';
 
 @Controller('has-roles')
 @ApiBearerAuth()
+@UseGuards(JwtTokenGuard)
 @UseGuards(PermissionGuard)
 export class HasRolesController {
   constructor(private readonly hasRoleService: HasRolesService) {}
