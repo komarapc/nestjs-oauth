@@ -26,7 +26,6 @@ import {
 } from './permission.openapi';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
 import {
-  PermissionCreateSchema,
   PermissionQuerySchema,
   PermissionUpdateSchema,
 } from './permission.schema';

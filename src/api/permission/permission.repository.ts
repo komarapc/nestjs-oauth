@@ -1,7 +1,7 @@
 import { Permission } from '@/entities/master/permission.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { JsonContains, Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import {
   PermissionCreateSchema,
   PermissionQuerySchema,
