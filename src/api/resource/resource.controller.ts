@@ -23,9 +23,11 @@ import {
 import { ResourceCreateDto, ResourceQueryDto } from './resource.openapi';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
 import { PermissionGuard } from '@/guards/permission/permission.guard';
+import { JwtTokenGuard } from '@/guards/jwt-token/jwt-token.guard';
 
 @Controller('resource')
 @ApiBearerAuth()
+@UseGuards(JwtTokenGuard)
 @UseGuards(PermissionGuard)
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}

@@ -18,9 +18,13 @@ import {
 import { metaPagination, zodErrorHandle } from '@/utils';
 import * as bcrypt from 'bcrypt';
 import config from '@/config/app';
+import { TokenService } from '@/services/token.service';
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepo: UsersRepository) {}
+  constructor(
+    private readonly userRepo: UsersRepository,
+    private readonly tokenService: TokenService,
+  ) {}
 
   async getAll(query: UserQuerySchema) {
     try {
@@ -31,6 +35,7 @@ export class UsersService {
         { page: parsedQuery.page, limit: parsedQuery.limit },
         users.total,
       );
+      console.log('user', await this.tokenService.getUser());
       return responseOk({ users: users.data, meta });
     } catch (error) {
       const { hasError, errors } = zodErrorHandle(error);

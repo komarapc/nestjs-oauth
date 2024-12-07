@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import config from '@/config/app';
+import { AuthTokenPayload } from '@/api/auth/auth.schema';
+import { UsersRepository } from '@/api/users/users.repository';
 
 @Injectable()
-export class TokenServie {
+export class TokenService {
+  constructor(private readonly userRepo: UsersRepository) {}
   public token: string = '';
 
   async setToken(token: string) {
@@ -37,5 +40,12 @@ export class TokenServie {
     } catch (error) {
       return false;
     }
+  }
+
+  async getUser() {
+    const token: AuthTokenPayload = this.decodeToken(this.token);
+    const user = await this.userRepo.findOneById(token.user_id);
+    const { password, ...rest } = user;
+    return rest;
   }
 }

@@ -25,9 +25,11 @@ import { Cache } from 'cache-manager';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { PermissionGuard } from '@/guards/permission/permission.guard';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
+import { JwtTokenGuard } from '@/guards/jwt-token/jwt-token.guard';
 
 @ApiBearerAuth()
 @Controller('users')
+@UseGuards(JwtTokenGuard)
 @UseGuards(PermissionGuard)
 export class UsersController {
   constructor(

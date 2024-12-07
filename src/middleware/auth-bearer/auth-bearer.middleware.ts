@@ -1,4 +1,4 @@
-import { TokenServie } from '@/services/token.service';
+import { TokenService } from '@/services/token.service';
 import { responseUnauthorized } from '@/utils/response-data';
 import {
   HttpStatus,
@@ -12,7 +12,7 @@ import { Request, Response } from 'express';
 
 @Injectable()
 export class AuthBearerMiddleware implements NestMiddleware {
-  constructor(private readonly tokenService: TokenServie) {}
+  constructor(private readonly tokenService: TokenService) {}
   private readonly logger = new Logger(AuthBearerMiddleware.name);
   async use(@Req() req: Request, @Res() res: Response, next: () => void) {
     this.logger.log(AuthBearerMiddleware.name);

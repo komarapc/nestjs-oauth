@@ -12,7 +12,7 @@ import { UsersRepository } from '../users/users.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@/entities/master/user.entity';
 import { Repository } from 'typeorm';
-import { TokenServie } from '@/services/token.service';
+import { TokenService } from '@/services/token.service';
 import { HasRoleRepository } from '../has-roles/has-roles.repository';
 import { HasRoles } from '@/entities/master/has-roles.entity';
 import { Roles } from '@/entities/master/roles.entity';
@@ -28,7 +28,7 @@ import { AuthBearerMiddleware } from '@/middleware/auth-bearer/auth-bearer.middl
     GoogleStrategy,
     UsersRepository,
     Repository,
-    TokenServie,
+    TokenService,
     HasRoleRepository,
     RolesRepository,
   ],

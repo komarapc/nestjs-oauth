@@ -12,7 +12,10 @@ import { PermissionModule } from './permission/permission.module';
 import { ResourceModule } from './resource/resource.module';
 import { AuthBearerMiddleware } from '@/middleware/auth-bearer/auth-bearer.middleware';
 import { AuthController } from './auth/auth.controller';
-import { TokenServie } from '@/services/token.service';
+import { TokenService } from '@/services/token.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from '@/entities/master/user.entity';
+import { UsersRepository } from './users/users.repository';
 
 @Module({
   imports: [
@@ -22,8 +25,9 @@ import { TokenServie } from '@/services/token.service';
     HasRolesModule,
     PermissionModule,
     ResourceModule,
+    TypeOrmModule.forFeature([User]),
   ],
-  providers: [TokenServie],
+  providers: [TokenService, UsersRepository],
 })
 export class ApiModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

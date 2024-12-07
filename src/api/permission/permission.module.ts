@@ -5,10 +5,19 @@ import { Repository } from 'typeorm';
 import { PermissionRepository } from './permission.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Permission } from '@/entities/master/permission.entity';
+import { User } from '@/entities/master/user.entity';
+import { TokenService } from '@/services/token.service';
+import { UsersRepository } from '../users/users.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Permission])],
+  imports: [TypeOrmModule.forFeature([Permission, User])],
   controllers: [PermissionController],
-  providers: [PermissionService, Repository, PermissionRepository],
+  providers: [
+    PermissionService,
+    TokenService,
+    Repository,
+    PermissionRepository,
+    UsersRepository,
+  ],
 })
 export class PermissionModule {}

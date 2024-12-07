@@ -9,6 +9,7 @@ import {
   Put,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { Response } from 'express';
@@ -29,9 +30,11 @@ import {
   PermissionQuerySchema,
   PermissionUpdateSchema,
 } from './permission.schema';
+import { JwtTokenGuard } from '@/guards/jwt-token/jwt-token.guard';
 
 @Controller('permission')
 @ApiBearerAuth()
+@UseGuards(JwtTokenGuard)
 export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 

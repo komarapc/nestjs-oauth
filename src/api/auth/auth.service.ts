@@ -7,7 +7,7 @@ import {
   responseOk,
   responseUnauthorized,
 } from '@/utils/response-data';
-import { TokenServie } from '@/services/token.service';
+import { TokenService } from '@/services/token.service';
 import { Profile } from 'passport-google-oauth20';
 import { zodErrorHandle } from '@/utils';
 import {
@@ -24,7 +24,7 @@ import { RolesRepository } from '../roles/roles.repository';
 export class AuthService {
   constructor(
     private readonly userRepo: UsersRepository,
-    private readonly tokenService: TokenServie,
+    private readonly tokenService: TokenService,
     private readonly hasRoleRepo: HasRoleRepository,
     private readonly roleRepo: RolesRepository,
   ) {}

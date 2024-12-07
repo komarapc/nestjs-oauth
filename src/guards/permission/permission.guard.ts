@@ -3,7 +3,7 @@ import { HasRoleRepository } from '@/api/has-roles/has-roles.repository';
 import { PermissionRepository } from '@/api/permission/permission.repository';
 import { PermissionAction } from '@/api/permission/permission.schema';
 import { Permission } from '@/entities/master/permission.entity';
-import { TokenServie } from '@/services/token.service';
+import { TokenService } from '@/services/token.service';
 import { httpMethodToApiOperation } from '@/utils';
 import { responseForbidden } from '@/utils/response-data';
 import {
@@ -16,7 +16,7 @@ import {
 @Injectable()
 export class PermissionGuard implements CanActivate {
   constructor(
-    private readonly tokenService: TokenServie,
+    private readonly tokenService: TokenService,
     private readonly hasRoleRepo: HasRoleRepository,
     private readonly permissionRepo: PermissionRepository,
   ) {}

@@ -6,7 +6,7 @@ import { User } from '@/entities/master/user.entity';
 import { Repository } from 'typeorm';
 import { UsersRepository } from './users.repository';
 import { CacheModule } from '@nestjs/cache-manager';
-import { TokenServie } from '@/services/token.service';
+import { TokenService } from '@/services/token.service';
 import { AuthService } from '../auth/auth.service';
 import { RolesRepository } from '../roles/roles.repository';
 import { HasRoleRepository } from '../has-roles/has-roles.repository';
@@ -23,7 +23,7 @@ import { PermissionRepository } from '../permission/permission.repository';
   controllers: [UsersController],
   providers: [
     UsersService,
-    TokenServie,
+    TokenService,
     AuthService,
     Repository,
     UsersRepository,
