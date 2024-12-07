@@ -72,23 +72,21 @@ export class AuthService {
 
   async loginLocalWithRoles(data: AuthLocalLoginRolesSchema) {
     try {
-      const parsedData = authLocalLoginRolesSchema.parse(data);
-      const decode = this.tokenService.decodeToken(parsedData.token);
-      if (!decode) return responseUnauthorized('Token not valid');
-      const existUserRole = await this.hasRoleRepo.existUserRoles(
-        decode?.id,
-        parsedData.role_id,
-      );
-      if (!existUserRole)
-        return responseUnauthorized('User not have permission');
-      const [user, role] = await Promise.all([
-        this.userRepo.findOneById(decode.id),
-        this.roleRepo.findOneById(parsedData.role_id),
+      const { role_id } = authLocalLoginRolesSchema.parse(data);
+      const token = await this.tokenService.getToken();
+      const decoded = this.tokenService.decodeToken(token);
+      if (!decoded) return responseUnauthorized('Token not valid');
+      const [existUserRole, user, role] = await Promise.all([
+        this.hasRoleRepo.existUserRoles(decoded.id, role_id),
+        this.userRepo.findOneById(decoded.id),
+        this.roleRepo.findOneById(role_id),
       ]);
+      if (!existUserRole)
+        return responseUnauthorized('User does not have permission');
       const { password, ...userData } = user;
-      const payload = { id: user.id, role_id: parsedData.role_id };
-      const token = this.tokenService.generateToken(payload, '1d');
-      return responseOk({ user: userData, role, token });
+      const payload = { id: user.id, role_id };
+      const newToken = this.tokenService.generateToken(payload, '1d');
+      return responseOk({ user: userData, role, token: newToken });
     } catch (error) {
       const { errors, hasError } = zodErrorHandle(error);
       if (hasError) return responseBadRequest(errors);

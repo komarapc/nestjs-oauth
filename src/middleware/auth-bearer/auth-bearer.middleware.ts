@@ -3,6 +3,7 @@ import { responseUnauthorized } from '@/utils/response-data';
 import {
   HttpStatus,
   Injectable,
+  Logger,
   NestMiddleware,
   Req,
   Res,
@@ -12,7 +13,9 @@ import { Request, Response } from 'express';
 @Injectable()
 export class AuthBearerMiddleware implements NestMiddleware {
   constructor(private readonly tokenService: TokenServie) {}
-  use(@Req() req: Request, @Res() res: Response, next: () => void) {
+  private readonly logger = new Logger(AuthBearerMiddleware.name);
+  async use(@Req() req: Request, @Res() res: Response, next: () => void) {
+    this.logger.log(AuthBearerMiddleware.name);
     const authorization = req.headers.authorization;
     const unauthorized = responseUnauthorized('Unauthorized');
     if (!authorization)
@@ -24,7 +27,7 @@ export class AuthBearerMiddleware implements NestMiddleware {
     const validateToken = this.tokenService.validateToken(token);
     if (!validateToken)
       return res.status(HttpStatus.UNAUTHORIZED).json(unauthorized);
-    this.tokenService.setToken(token);
+    await this.tokenService.setToken(token);
     next();
   }
 }

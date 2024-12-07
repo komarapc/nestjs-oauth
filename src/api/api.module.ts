@@ -34,6 +34,6 @@ export class ApiModule implements NestModule {
         { path: 'auth/google/callback', method: RequestMethod.GET },
         { path: 'auth/local/login', method: RequestMethod.POST },
       )
-      .forRoutes(AuthController);
+      .forRoutes('*');
   }
 }

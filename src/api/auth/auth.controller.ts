@@ -15,10 +15,14 @@ import { ApiBody, ApiOperation } from '@nestjs/swagger';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
 import { AuthLocalLoginDto, AuthLocalLoginRolesDto } from './auth.openapi';
 import { AuthLocalLoginRolesSchema, AuthLocalLoginSchema } from './auth.schema';
+import { TokenServie } from '@/services/token.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly tokenServie: TokenServie,
+  ) {}
   @Get('google/login')
   @UseGuards(GoogleAuthGuard)
   async googleLogin() {
@@ -49,8 +53,12 @@ export class AuthController {
   @ApiBody({ type: AuthLocalLoginRolesDto })
   async localLoginRoles(
     @Body() body: AuthLocalLoginRolesSchema,
+    @Req() req: Request,
     @Res() res: Response,
   ) {
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(' ')[1];
+    await this.tokenServie.setToken(token);
     const result = await this.authService.loginLocalWithRoles(body);
     res.status(result.status_code).json(result);
   }

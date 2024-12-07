@@ -6,11 +6,11 @@ import config from '@/config/app';
 export class TokenServie {
   public token: string = '';
 
-  setToken(token: string) {
+  async setToken(token: string) {
     this.token = token;
   }
 
-  getToken() {
+  async getToken() {
     return this.token;
   }
 
