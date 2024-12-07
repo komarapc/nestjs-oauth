@@ -31,9 +31,9 @@ export class Permission {
 
   @ManyToOne(() => Roles, (role) => role.permissions)
   @JoinColumn({ name: 'role_id' })
-  role: Roles;
+  role?: Roles;
 
   @ManyToOne(() => Resource, (resource) => resource.permissions)
   @JoinColumn({ name: 'resource_id' })
-  resource: Resource;
+  resource?: Resource;
 }
