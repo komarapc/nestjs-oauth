@@ -35,7 +35,6 @@ export class UsersService {
         { page: parsedQuery.page, limit: parsedQuery.limit },
         users.total,
       );
-      console.log('user', await this.tokenService.getUser());
       return responseOk({ users: users.data, meta });
     } catch (error) {
       const { hasError, errors } = zodErrorHandle(error);

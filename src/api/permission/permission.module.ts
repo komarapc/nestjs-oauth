@@ -8,9 +8,11 @@ import { Permission } from '@/entities/master/permission.entity';
 import { User } from '@/entities/master/user.entity';
 import { TokenService } from '@/services/token.service';
 import { UsersRepository } from '../users/users.repository';
+import { HasRoles } from '@/entities/master/has-roles.entity';
+import { HasRoleRepository } from '../has-roles/has-roles.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Permission, User])],
+  imports: [TypeOrmModule.forFeature([Permission, User, HasRoles])],
   controllers: [PermissionController],
   providers: [
     PermissionService,
@@ -18,6 +20,7 @@ import { UsersRepository } from '../users/users.repository';
     Repository,
     PermissionRepository,
     UsersRepository,
+    HasRoleRepository,
   ],
 })
 export class PermissionModule {}

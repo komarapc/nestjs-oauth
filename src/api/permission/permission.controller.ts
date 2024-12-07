@@ -30,10 +30,12 @@ import {
   PermissionUpdateSchema,
 } from './permission.schema';
 import { JwtTokenGuard } from '@/guards/jwt-token/jwt-token.guard';
+import { PermissionGuard } from '@/guards/permission/permission.guard';
 
 @Controller('permission')
 @ApiBearerAuth()
 @UseGuards(JwtTokenGuard)
+@UseGuards(PermissionGuard)
 export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
