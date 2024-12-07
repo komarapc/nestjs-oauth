@@ -11,7 +11,6 @@ import { HasRolesModule } from './has-roles/has-roles.module';
 import { PermissionModule } from './permission/permission.module';
 import { ResourceModule } from './resource/resource.module';
 import { AuthBearerMiddleware } from '@/middleware/auth-bearer/auth-bearer.middleware';
-import { AuthController } from './auth/auth.controller';
 import { TokenService } from '@/services/token.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@/entities/master/user.entity';
