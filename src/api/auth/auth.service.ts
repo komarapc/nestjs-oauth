@@ -20,6 +20,16 @@ import {
 import * as bcrypt from 'bcrypt';
 import { HasRoleRepository } from '../has-roles/has-roles.repository';
 import { RolesRepository } from '../roles/roles.repository';
+
+export type UserProfile = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date;
+};
 @Injectable()
 export class AuthService {
   constructor(
@@ -33,14 +43,20 @@ export class AuthService {
     const user = await this.userRepo.findOneByEmail(email);
     if (user) return user;
     const newUser = await this.userRepo.store({ email, name });
-    console.log('new user', newUser);
     return newUser;
   }
 
-  async callbackGoogleAuth(user: Profile) {
+  async callbackGoogleAuth(user: UserProfile) {
     try {
       const token = this.tokenService.generateToken({ id: user.id }, '1d');
-      return responseOk({ user, token });
+      const userExist = await this.userRepo.findOneByEmail(user.email);
+      const { password, ...restUser } = userExist;
+      const avaliableRoles = await this.hasRoleRepo.getByUserId(userExist.id);
+      return responseOk({
+        user: restUser,
+        avaliable_roles: avaliableRoles,
+        token,
+      });
     } catch (error) {
       return responseInternalServerError(error.message);
     }

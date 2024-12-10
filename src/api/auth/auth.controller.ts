@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AuthService } from './auth.service';
+import { AuthService, UserProfile } from './auth.service';
 import { Profile } from 'passport-google-oauth20';
 import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
 import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
@@ -33,7 +33,7 @@ export class AuthController {
   @UseGuards(GoogleAuthGuard)
   async googleCallback(@Req() request: Request, @Res() res: Response) {
     const result = await this.authService.callbackGoogleAuth(
-      request?.user as Profile,
+      request?.user as UserProfile,
     );
     res.status(result.status_code).json(result);
   }
