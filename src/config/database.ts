@@ -8,5 +8,5 @@ export const databaseMasterConfig: TypeOrmModuleOptions = {
   password: config().database.default.password,
   database: config().database.default.databaseName,
   entities: [__dirname + '/../entities/master/*.entity{.ts,.js}'],
-  synchronize: true,
+  synchronize: false,
 };
