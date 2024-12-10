@@ -33,6 +33,7 @@ export class ApiModule implements NestModule {
     consumer
       .apply(AuthBearerMiddleware)
       .exclude(
+        { path: '/', method: RequestMethod.GET },
         { path: 'auth/google/login', method: RequestMethod.GET },
         { path: 'auth/google/callback', method: RequestMethod.GET },
         { path: 'auth/local/login', method: RequestMethod.POST },
