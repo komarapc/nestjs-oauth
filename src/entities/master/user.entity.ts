@@ -33,6 +33,6 @@ export class User {
   @DeleteDateColumn({ nullable: true, type: 'timestamp' })
   deletedAt?: Date;
 
-  @OneToMany(() => HasRoles, (hasRoles) => hasRoles.user)
+  @OneToMany(() => HasRoles, (hasRoles) => hasRoles.user, { cascade: true })
   hasRoles?: HasRoles[];
 }

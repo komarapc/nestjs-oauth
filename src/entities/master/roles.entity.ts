@@ -27,9 +27,11 @@ export class Roles {
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deletedAt?: Date;
 
-  @OneToMany(() => HasRoles, (hasRoles) => hasRoles.role)
+  @OneToMany(() => HasRoles, (hasRoles) => hasRoles.role, { cascade: true })
   hasRoles?: HasRoles[];
 
-  @OneToMany(() => Permission, (permission) => permission.role)
+  @OneToMany(() => Permission, (permission) => permission.role, {
+    cascade: true,
+  })
   permissions?: Permission[];
 }
