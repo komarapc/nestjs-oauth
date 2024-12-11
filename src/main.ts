@@ -6,7 +6,6 @@ import * as passport from 'passport';
 import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { AppClusterService } from './services/clusterize.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -49,4 +48,5 @@ async function bootstrap() {
   });
   await app.listen(config().port);
 }
-AppClusterService.clusterize(bootstrap);
+// AppClusterService.clusterize(bootstrap);
+bootstrap();
