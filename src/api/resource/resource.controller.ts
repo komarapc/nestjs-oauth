@@ -25,7 +25,7 @@ import { OpenApiResponses } from '@/decorators/openapi-response.decorator';
 import { PermissionGuard } from '@/guards/permission/permission.guard';
 import { JwtTokenGuard } from '@/guards/jwt-token/jwt-token.guard';
 
-@Controller('resource')
+@Controller('resources')
 @ApiBearerAuth()
 @UseGuards(JwtTokenGuard)
 @UseGuards(PermissionGuard)

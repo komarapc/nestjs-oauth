@@ -1,6 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import config from '@/config/app';
-export const databaseMasterConfig: TypeOrmModuleOptions = {
+import config from './app';
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+export const databaseMasterConfig: MysqlConnectionOptions = {
   type: 'mysql',
   host: config().database.default.host,
   port: config().database.default.port,
@@ -8,5 +9,5 @@ export const databaseMasterConfig: TypeOrmModuleOptions = {
   password: config().database.default.password,
   database: config().database.default.databaseName,
   entities: [__dirname + '/../entities/master/*.entity{.ts,.js}'],
-  synchronize: false,
+  synchronize: true,
 };

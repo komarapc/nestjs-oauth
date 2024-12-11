@@ -32,7 +32,7 @@ import {
 import { JwtTokenGuard } from '@/guards/jwt-token/jwt-token.guard';
 import { PermissionGuard } from '@/guards/permission/permission.guard';
 
-@Controller('permission')
+@Controller('permissions')
 @ApiBearerAuth()
 @UseGuards(JwtTokenGuard)
 @UseGuards(PermissionGuard)
