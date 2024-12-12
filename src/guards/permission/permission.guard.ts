@@ -24,7 +24,6 @@ export class PermissionGuard implements CanActivate {
     const message = 'You do not have permission to access this resource';
     const request = context.switchToHttp().getRequest();
     const { headers, url, method } = request;
-    console.log('url', url);
     const token = headers.authorization.split(' ')[1];
     const tokenPayload: AuthTokenPayload = this.tokenService.decodeToken(token);
     const resourceOperation = httpMethodToApiOperation(method);
