@@ -24,6 +24,7 @@ export class PermissionGuard implements CanActivate {
     const message = 'You do not have permission to access this resource';
     const request = context.switchToHttp().getRequest();
     const { headers, url, method } = request;
+    console.log('url', url);
     const token = headers.authorization.split(' ')[1];
     const tokenPayload: AuthTokenPayload = this.tokenService.decodeToken(token);
     const resourceOperation = httpMethodToApiOperation(method);
@@ -49,13 +50,12 @@ export class PermissionGuard implements CanActivate {
     url: string,
     action: string,
     permissions: Permission[],
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     const resourceExist = permissions.find(
       (item) =>
-        item.resource.path === url ||
-        (item.resource.path.includes(url) &&
-          item.action.includes(action as PermissionAction)),
+        url.includes(item.resource.path) && // Check if the URL includes the resource path
+        item.action.includes(action as PermissionAction),
     );
-    return resourceExist ? true : false;
+    return !!resourceExist;
   }
 }
